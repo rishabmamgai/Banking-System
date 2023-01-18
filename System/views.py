@@ -5,7 +5,7 @@ from .models import User
 
 
 def home(request):
-    return render(request, 'home.html')
+    return render(request, 'system/home.html')
 
 
 def login(request):
@@ -19,7 +19,7 @@ def login(request):
             messages.success(request, f"Logged in as {user_id}")
             params = {"user": user_id, "balance": user[0].balance}
 
-            return render(request, 'user.html', params)
+            return render(request, 'system/user.html', params)
 
         else:
             messages.error(request, "Login failed. Please check your User ID and password")
@@ -47,7 +47,7 @@ def create_account(request):
             return redirect('Create Account')
 
     else:
-        return render(request, 'create_account.html')
+        return render(request, 'system/create_account.html')
 
 
 def transaction(request):
@@ -67,12 +67,11 @@ def transaction(request):
                 balance -= amount
                 messages.success(request, f"Successfull withdrawal of Rs. {amount}")
 
-
             else:
                 messages.error(request, "Balance not sufficient.")
                 params = {"user": user_id, "balance": balance}
     
-                return render(request, 'user.html', params)
+                return render(request, 'system/user.html', params)
                                 
         else:
             balance += amount
@@ -82,6 +81,6 @@ def transaction(request):
         User.objects.filter(user_id=user_id).update(balance=balance)
 
         params = {"user": user_id, "balance": balance}
-        return render(request, 'user.html', params)
+        return render(request, 'system/user.html', params)
     
     return HttpResponse("Error")
